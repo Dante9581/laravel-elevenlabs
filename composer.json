@@ -1,6 +1,7 @@
 {
     "name": "digitalcorehub/laravel-elevenlabs",
     "description": "Laravel package for ElevenLabs Text-to-Speech API integration",
+    "version": "0.1.0",
     "type": "library",
     "license": "MIT",
     "keywords": [
