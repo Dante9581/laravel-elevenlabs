@@ -8,8 +8,11 @@ use DigitalCoreHub\LaravelElevenLabs\Http\Endpoints\TtsEndpoint;
 class TtsService
 {
     protected ?string $voice = null;
+
     protected ?string $text = null;
+
     protected ?string $format = null;
+
     protected ?array $voiceSettings = null;
 
     /**
@@ -19,8 +22,7 @@ class TtsService
         protected TtsEndpoint $endpoint,
         protected string $defaultVoice,
         protected string $defaultFormat
-    ) {
-    }
+    ) {}
 
     /**
      * Set the voice ID to use.
@@ -110,7 +112,7 @@ class TtsService
             default => 'mp3',
         };
 
-        return 'tts_' . time() . '.' . $extension;
+        return 'tts_'.time().'.'.$extension;
     }
 
     /**
@@ -126,4 +128,3 @@ class TtsService
         return $this;
     }
 }
-

@@ -2,7 +2,6 @@
 
 namespace DigitalCoreHub\LaravelElevenLabs\Tests\Fake;
 
-use DigitalCoreHub\LaravelElevenLabs\Data\AudioFile;
 use DigitalCoreHub\LaravelElevenLabs\Http\Endpoints\TtsEndpoint;
 
 class FakeTtsProvider extends TtsEndpoint
@@ -20,4 +19,3 @@ class FakeTtsProvider extends TtsEndpoint
         return base64_encode("fake_audio_content_for_{$text}_with_voice_{$voiceId}");
     }
 }
-

@@ -39,4 +39,3 @@ class ElevenLabs extends Facade
         return app(SttService::class);
     }
 }
-

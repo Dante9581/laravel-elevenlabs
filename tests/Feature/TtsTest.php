@@ -49,6 +49,7 @@ class TtsTest extends TestCase
     {
         $this->app->singleton(TtsEndpoint::class, function ($app) {
             $client = $app->make(ElevenLabsClient::class);
+
             return new FakeTtsProvider($client);
         });
     }
@@ -155,4 +156,3 @@ class TtsTest extends TestCase
         $this->assertInstanceOf(AudioFile::class, $audioFile);
     }
 }
-

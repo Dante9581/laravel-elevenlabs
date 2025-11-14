@@ -11,8 +11,7 @@ class TtsEndpoint
      */
     public function __construct(
         protected ElevenLabsClient $client
-    ) {
-    }
+    ) {}
 
     /**
      * Generate text-to-speech audio.
@@ -42,4 +41,3 @@ class TtsEndpoint
         return $this->client->postBinary($endpoint, $data, $query);
     }
 }
-

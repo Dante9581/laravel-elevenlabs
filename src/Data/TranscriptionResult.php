@@ -11,8 +11,7 @@ class TranscriptionResult
         public readonly string $text,
         public readonly ?array $words = null,
         public readonly ?float $confidence = null
-    ) {
-    }
+    ) {}
 
     /**
      * Get the transcribed text.
@@ -50,4 +49,3 @@ class TranscriptionResult
         ];
     }
 }
-

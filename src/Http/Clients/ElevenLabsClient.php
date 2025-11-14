@@ -14,8 +14,7 @@ class ElevenLabsClient
         protected string $apiKey,
         protected string $baseUrl,
         protected int $timeout = 30
-    ) {
-    }
+    ) {}
 
     /**
      * Create a configured HTTP client instance.
@@ -71,7 +70,7 @@ class ElevenLabsClient
     {
         $request = $this->client();
 
-        if (!empty($query)) {
+        if (! empty($query)) {
             $request = $request->withQueryParameters($query);
         }
 
@@ -94,7 +93,7 @@ class ElevenLabsClient
     {
         $request = $this->client();
 
-        if (!empty($query)) {
+        if (! empty($query)) {
             $request = $request->withQueryParameters($query);
         }
 
@@ -110,4 +109,3 @@ class ElevenLabsClient
         return $response->json() ?? [];
     }
 }
-

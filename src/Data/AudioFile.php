@@ -11,8 +11,7 @@ class AudioFile
         public readonly string $content,
         public readonly string $format,
         public readonly ?string $filename = null
-    ) {
-    }
+    ) {}
 
     /**
      * Get the audio content as a string.
@@ -48,4 +47,3 @@ class AudioFile
         return $storage->put($path, $this->content);
     }
 }
-

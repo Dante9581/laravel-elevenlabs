@@ -24,4 +24,3 @@ class ElevenLabsException extends Exception
         return new self($message, $statusCode);
     }
 }
-

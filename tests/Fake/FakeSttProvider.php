@@ -48,4 +48,3 @@ class FakeSttProvider extends SttEndpoint
         ];
     }
 }
-

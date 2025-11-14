@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Storage;
 class SttService
 {
     protected ?string $filePath = null;
+
     protected ?string $disk = null;
+
     protected ?string $modelId = null;
 
     /**
@@ -17,8 +19,7 @@ class SttService
      */
     public function __construct(
         protected SttEndpoint $endpoint
-    ) {
-    }
+    ) {}
 
     /**
      * Set the audio file to transcribe.
@@ -53,7 +54,7 @@ class SttService
         // Get the full file path
         $fullPath = $this->getFullFilePath();
 
-        if (!file_exists($fullPath)) {
+        if (! file_exists($fullPath)) {
             throw new \InvalidArgumentException("File not found: {$fullPath}");
         }
 
@@ -81,7 +82,7 @@ class SttService
         if ($this->disk !== null) {
             $storage = Storage::disk($this->disk);
 
-            if (!$storage->exists($this->filePath)) {
+            if (! $storage->exists($this->filePath)) {
                 throw new \InvalidArgumentException("File not found in storage: {$this->filePath}");
             }
 
@@ -96,7 +97,7 @@ class SttService
         // Assume it's a relative path from storage/app
         $storage = Storage::disk('local');
 
-        if (!$storage->exists($this->filePath)) {
+        if (! $storage->exists($this->filePath)) {
             throw new \InvalidArgumentException("File not found: {$this->filePath}");
         }
 
@@ -115,4 +116,3 @@ class SttService
         return $this;
     }
 }
-

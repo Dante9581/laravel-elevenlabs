@@ -17,7 +17,7 @@ class ElevenLabsServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/elevenlabs.php',
+            __DIR__.'/../config/elevenlabs.php',
             'elevenlabs'
         );
 
@@ -70,8 +70,7 @@ class ElevenLabsServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->publishes([
-            __DIR__ . '/../config/elevenlabs.php' => config_path('elevenlabs.php'),
+            __DIR__.'/../config/elevenlabs.php' => config_path('elevenlabs.php'),
         ], 'elevenlabs-config');
     }
 }
-

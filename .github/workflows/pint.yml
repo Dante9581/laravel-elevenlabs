@@ -5,6 +5,11 @@ on:
     branches: [ main, develop ]
   pull_request:
     branches: [ main, develop ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   pint:
@@ -14,6 +19,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -26,12 +34,48 @@ jobs:
         run: composer install --prefer-dist --no-interaction
 
       - name: Run Pint
+        id: pint
         run: |
           if [ -f vendor/bin/pint ]; then
-            vendor/bin/pint --test
+            vendor/bin/pint
           else
             echo "Laravel Pint not installed, installing..."
             composer require laravel/pint --dev --no-interaction
-            vendor/bin/pint --test
+            vendor/bin/pint
           fi
+
+      - name: Check for changes
+        id: git-check
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit changes
+        if: steps.git-check.outputs.changes == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "chore: apply Pint code style fixes"
+
+      - name: Create Pull Request
+        if: steps.git-check.outputs.changes == 'true' && github.event_name == 'push'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: apply Pint code style fixes"
+          title: "chore: apply Pint code style fixes"
+          body: |
+            This PR applies automatic code style fixes from Laravel Pint.
+
+            **Changes:**
+            - Applied Laravel Pint code style fixes
+            - All files now conform to Laravel coding standards
+
+            **Note:** This PR was automatically created by GitHub Actions.
+          branch: pint-code-style-fixes
+          delete-branch: true
 

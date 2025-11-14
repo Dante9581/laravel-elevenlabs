@@ -59,4 +59,3 @@ return [
 
     'timeout' => env('ELEVENLABS_TIMEOUT', 30),
 ];
-

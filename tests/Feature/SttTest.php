@@ -49,6 +49,7 @@ class SttTest extends TestCase
     {
         $this->app->singleton(SttEndpoint::class, function ($app) {
             $client = $app->make(ElevenLabsClient::class);
+
             return new FakeSttProvider($client);
         });
     }
@@ -59,6 +60,7 @@ class SttTest extends TestCase
     protected function createTestAudioFile(string $path = 'test-audio.wav'): string
     {
         Storage::disk('local')->put($path, 'fake audio content');
+
         return Storage::disk('local')->path($path);
     }
 
@@ -192,4 +194,3 @@ class SttTest extends TestCase
         $this->assertArrayHasKey('confidence', $array);
     }
 }
-

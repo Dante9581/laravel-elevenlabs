@@ -11,8 +11,7 @@ class SttEndpoint
      */
     public function __construct(
         protected ElevenLabsClient $client
-    ) {
-    }
+    ) {}
 
     /**
      * Transcribe audio file to text.
@@ -48,4 +47,3 @@ class SttEndpoint
         return $response;
     }
 }
-
