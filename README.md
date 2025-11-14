@@ -249,6 +249,146 @@ The STT API supports various audio formats:
 - FLAC
 - And other common audio formats
 
+## Voice Management
+
+### List All Voices
+
+Get a collection of all available voices:
+
+```php
+$voices = ElevenLabs::voices()->list();
+
+// Iterate through voices
+foreach ($voices as $voice) {
+    echo $voice->name;
+    echo $voice->voiceId;
+}
+
+// Find voice by ID
+$voice = $voices->findById('voice-id');
+
+// Find voices by name
+$found = $voices->findByName('Nova');
+```
+
+### Get Single Voice
+
+Get detailed information about a specific voice:
+
+```php
+$voice = ElevenLabs::voices()->get('voice-id');
+
+// Access voice properties
+echo $voice->name;
+echo $voice->description;
+echo $voice->category;
+$settings = $voice->settings;
+```
+
+### Create Custom Voice
+
+Create a custom voice using audio files:
+
+```php
+// Using absolute file paths
+$voice = ElevenLabs::voices()
+    ->name('My Custom Voice')
+    ->files(['/path/to/voice1.wav', '/path/to/voice2.wav'])
+    ->description('A custom voice for my project')
+    ->labels(['accent' => 'british', 'age' => 'young'])
+    ->create();
+
+// Using storage disk files
+$voice = ElevenLabs::voices()
+    ->name('My Custom Voice')
+    ->files([
+        ['path' => 'voices/voice1.wav', 'disk' => 'local'],
+        ['path' => 'voices/voice2.wav', 'disk' => 's3'],
+    ])
+    ->create();
+```
+
+### Delete Voice
+
+Delete a voice:
+
+```php
+$deleted = ElevenLabs::voices()->delete('voice-id');
+```
+
+### Sync Voices
+
+Sync voices from the API (useful for caching or updating local database):
+
+```php
+// Direct sync
+$voices = ElevenLabs::voices()->sync();
+
+// Using queue job
+use DigitalCoreHub\LaravelElevenLabs\Jobs\SyncVoicesJob;
+
+SyncVoicesJob::dispatch();
+```
+
+### Voice Events
+
+The package dispatches events when voices are created or synced:
+
+```php
+use DigitalCoreHub\LaravelElevenLabs\Events\VoiceCreated;
+use DigitalCoreHub\LaravelElevenLabs\Events\VoiceSynced;
+
+// Listen to voice created event
+Event::listen(VoiceCreated::class, function (VoiceCreated $event) {
+    $voice = $event->voice;
+    // Handle voice creation
+});
+
+// Listen to voice synced event
+Event::listen(VoiceSynced::class, function (VoiceSynced $event) {
+    $voices = $event->voices;
+    // Handle voice sync
+});
+```
+
+### Voice Data Model
+
+The `Voice` class provides access to all voice properties:
+
+```php
+$voice = ElevenLabs::voices()->get('voice-id');
+
+// Properties
+$voice->voiceId;
+$voice->name;
+$voice->description;
+$voice->category;
+$voice->samples;
+$voice->settings;
+$voice->labels;
+$voice->previewUrl;
+
+// Convert to array
+$array = $voice->toArray();
+```
+
+### VoiceCollection
+
+The `VoiceCollection` extends Laravel's Collection with additional methods:
+
+```php
+$voices = ElevenLabs::voices()->list();
+
+// Collection methods
+$voices->count();
+$voices->first();
+$voices->filter(fn ($voice) => $voice->category === 'premade');
+
+// Custom methods
+$voice = $voices->findById('voice-id');
+$found = $voices->findByName('Nova');
+```
+
 ## 🔄 Queue Usage
 
 You can easily queue TTS generation jobs:
@@ -347,6 +487,18 @@ $this->app->singleton(SttEndpoint::class, function ($app) {
 - [x] Support for multiple audio formats
 - [x] Custom model selection
 - [x] Words array and confidence scores
+- [x] Comprehensive test coverage
+
+### v0.3 - Voice Management ✅
+- [x] Fluent API for voice management
+- [x] List and get voice operations
+- [x] Custom voice creation with file uploads
+- [x] Voice deletion support
+- [x] Voice sync functionality
+- [x] Queue support with SyncVoicesJob
+- [x] Event system (VoiceCreated, VoiceSynced)
+- [x] Voice and VoiceCollection data models
+- [x] Storage disk integration
 - [x] Comprehensive test coverage
 
 ## 📝 License

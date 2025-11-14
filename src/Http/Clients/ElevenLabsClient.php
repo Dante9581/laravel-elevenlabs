@@ -108,4 +108,21 @@ class ElevenLabsClient
 
         return $response->json() ?? [];
     }
+
+    /**
+     * Make a DELETE request.
+     */
+    public function delete(string $endpoint): array
+    {
+        $response = $this->client()->delete($endpoint);
+
+        if ($response->failed()) {
+            throw \DigitalCoreHub\LaravelElevenLabs\Exceptions\ElevenLabsException::fromApiResponse(
+                $response->json() ?? [],
+                $response->status()
+            );
+        }
+
+        return $response->json() ?? [];
+    }
 }
