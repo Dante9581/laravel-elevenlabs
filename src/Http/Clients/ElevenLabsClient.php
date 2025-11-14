@@ -86,5 +86,28 @@ class ElevenLabsClient
 
         return $response->body();
     }
+
+    /**
+     * Make a multipart POST request (for file uploads).
+     */
+    public function postMultipart(string $endpoint, array $data = [], array $query = []): array
+    {
+        $request = $this->client();
+
+        if (!empty($query)) {
+            $request = $request->withQueryParameters($query);
+        }
+
+        $response = $request->asMultipart()->post($endpoint, $data);
+
+        if ($response->failed()) {
+            throw \DigitalCoreHub\LaravelElevenLabs\Exceptions\ElevenLabsException::fromApiResponse(
+                $response->json() ?? [],
+                $response->status()
+            );
+        }
+
+        return $response->json() ?? [];
+    }
 }
 

@@ -3,7 +3,9 @@
 namespace DigitalCoreHub\LaravelElevenLabs;
 
 use DigitalCoreHub\LaravelElevenLabs\Http\Clients\ElevenLabsClient;
+use DigitalCoreHub\LaravelElevenLabs\Http\Endpoints\SttEndpoint;
 use DigitalCoreHub\LaravelElevenLabs\Http\Endpoints\TtsEndpoint;
+use DigitalCoreHub\LaravelElevenLabs\Services\STT\SttService;
 use DigitalCoreHub\LaravelElevenLabs\Services\TTS\TtsService;
 use Illuminate\Support\ServiceProvider;
 
@@ -42,6 +44,18 @@ class ElevenLabsServiceProvider extends ServiceProvider
                 endpoint: $app->make(TtsEndpoint::class),
                 defaultVoice: $config['default_voice'],
                 defaultFormat: $config['default_format']
+            );
+        });
+
+        $this->app->singleton(SttEndpoint::class, function ($app) {
+            return new SttEndpoint(
+                $app->make(ElevenLabsClient::class)
+            );
+        });
+
+        $this->app->bind(SttService::class, function ($app) {
+            return new SttService(
+                endpoint: $app->make(SttEndpoint::class)
             );
         });
 

@@ -4,7 +4,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/digitalcorehub/laravel-elevenlabs.svg?style=flat-square)](https://packagist.org/packages/digitalcorehub/laravel-elevenlabs)
 [![License](https://img.shields.io/packagist/l/digitalcorehub/laravel-elevenlabs.svg?style=flat-square)](https://packagist.org/packages/digitalcorehub/laravel-elevenlabs)
 
-A modern, fluent Laravel package for integrating with the ElevenLabs Text-to-Speech API. This package provides a clean and intuitive interface for converting text to speech in your Laravel applications.
+A modern, fluent Laravel package for integrating with the ElevenLabs Text-to-Speech (TTS) and Speech-to-Text (STT) APIs. This package provides a clean and intuitive interface for converting text to speech and transcribing audio in your Laravel applications.
 
 ## 📋 Requirements
 
@@ -51,7 +51,9 @@ ELEVENLABS_TIMEOUT=30
 
 ## 📖 Usage
 
-### Basic Usage
+## Text-to-Speech (TTS)
+
+### Basic TTS Usage
 
 The package provides a fluent API for generating text-to-speech audio:
 
@@ -145,6 +147,108 @@ ElevenLabs::tts()
     ->save('voices/hello.mp3', 's3'); // Save to S3
 ```
 
+## Speech-to-Text (STT)
+
+### Basic STT Usage
+
+The package provides a fluent API for transcribing audio files:
+
+```php
+use DigitalCoreHub\LaravelElevenLabs\Facades\ElevenLabs;
+
+// Transcribe an audio file
+$result = ElevenLabs::stt()
+    ->file('audio.wav')
+    ->transcribe();
+
+// Access the transcribed text
+echo $result->text;
+
+// Access words array (if available)
+$words = $result->words;
+
+// Access confidence score (if available)
+$confidence = $result->confidence;
+```
+
+### Using Storage Disks
+
+You can transcribe files from any Laravel storage disk:
+
+```php
+// From local storage
+$result = ElevenLabs::stt()
+    ->file('audio/recording.wav', 'local')
+    ->transcribe();
+
+// From S3
+$result = ElevenLabs::stt()
+    ->file('audio/recording.wav', 's3')
+    ->transcribe();
+```
+
+### Using Absolute File Paths
+
+You can also use absolute file paths:
+
+```php
+$result = ElevenLabs::stt()
+    ->file('/path/to/audio.wav')
+    ->transcribe();
+```
+
+### Custom Model
+
+You can specify a custom model for transcription:
+
+```php
+$result = ElevenLabs::stt()
+    ->file('audio.wav')
+    ->model('eleven_multilingual_v2')
+    ->transcribe();
+```
+
+### TranscriptionResult Data Model
+
+The `transcribe()` method returns a `TranscriptionResult` object with the following properties:
+
+- **text** (string): The transcribed text
+- **words** (array|null): Array of word objects with timing information (if available)
+- **confidence** (float|null): Confidence score of the transcription (if available)
+
+Example:
+
+```php
+$result = ElevenLabs::stt()
+    ->file('audio.wav')
+    ->transcribe();
+
+// Get text
+$text = $result->getText();
+
+// Get words array
+$words = $result->getWords();
+// [
+//     ['word' => 'Hello', 'start' => 0.0, 'end' => 0.5],
+//     ['word' => 'world', 'start' => 0.5, 'end' => 1.0],
+// ]
+
+// Get confidence
+$confidence = $result->getConfidence(); // 0.95
+
+// Convert to array
+$array = $result->toArray();
+```
+
+### Supported Audio Formats
+
+The STT API supports various audio formats:
+- WAV
+- MP3
+- M4A
+- FLAC
+- And other common audio formats
+
 ## 🔄 Queue Usage
 
 You can easily queue TTS generation jobs:
@@ -196,16 +300,33 @@ class GenerateTtsJob implements ShouldQueue
 
 ## 🧪 Testing
 
-The package includes a `FakeTtsProvider` for testing purposes. You can use it in your tests:
+The package includes fake providers for testing purposes.
+
+### Testing TTS
 
 ```php
 use DigitalCoreHub\LaravelElevenLabs\Tests\Fake\FakeTtsProvider;
 use DigitalCoreHub\LaravelElevenLabs\Http\Endpoints\TtsEndpoint;
+use DigitalCoreHub\LaravelElevenLabs\Http\Clients\ElevenLabsClient;
 
 // In your test setup
 $this->app->singleton(TtsEndpoint::class, function ($app) {
     $client = $app->make(ElevenLabsClient::class);
     return new FakeTtsProvider($client);
+});
+```
+
+### Testing STT
+
+```php
+use DigitalCoreHub\LaravelElevenLabs\Tests\Fake\FakeSttProvider;
+use DigitalCoreHub\LaravelElevenLabs\Http\Endpoints\SttEndpoint;
+use DigitalCoreHub\LaravelElevenLabs\Http\Clients\ElevenLabsClient;
+
+// In your test setup
+$this->app->singleton(SttEndpoint::class, function ($app) {
+    $client = $app->make(ElevenLabsClient::class);
+    return new FakeSttProvider($client);
 });
 ```
 
@@ -217,6 +338,15 @@ $this->app->singleton(TtsEndpoint::class, function ($app) {
 - [x] Custom voice settings
 - [x] Storage integration
 - [x] Configuration management
+- [x] Comprehensive test coverage
+
+### v0.2 - Speech-to-Text (STT) ✅
+- [x] Fluent API for STT transcription
+- [x] File upload support (local and storage disks)
+- [x] TranscriptionResult data model
+- [x] Support for multiple audio formats
+- [x] Custom model selection
+- [x] Words array and confidence scores
 - [x] Comprehensive test coverage
 
 ## 📝 License
