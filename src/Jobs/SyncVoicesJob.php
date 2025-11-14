@@ -26,4 +26,3 @@ class SyncVoicesJob implements ShouldQueue
         ElevenLabs::voices()->sync();
     }
 }
-

@@ -17,4 +17,3 @@ class VoiceSynced
         public readonly VoiceCollection $voices
     ) {}
 }
-

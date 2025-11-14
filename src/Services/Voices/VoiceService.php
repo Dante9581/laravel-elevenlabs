@@ -11,8 +11,11 @@ use Illuminate\Support\Facades\Storage;
 class VoiceService
 {
     protected ?string $name = null;
+
     protected array $files = [];
+
     protected ?string $description = null;
+
     protected ?array $labels = null;
 
     /**
@@ -211,4 +214,3 @@ class VoiceService
         return $this;
     }
 }
-

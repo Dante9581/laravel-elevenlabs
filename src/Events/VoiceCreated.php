@@ -17,4 +17,3 @@ class VoiceCreated
         public readonly Voice $voice
     ) {}
 }
-

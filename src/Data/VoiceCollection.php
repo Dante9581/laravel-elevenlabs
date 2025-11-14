@@ -44,4 +44,3 @@ class VoiceCollection extends Collection
         return $this->filter(fn (Voice $voice) => $voice->name === $name)->values();
     }
 }
-

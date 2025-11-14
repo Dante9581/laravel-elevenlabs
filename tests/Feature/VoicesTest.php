@@ -53,6 +53,7 @@ class VoicesTest extends TestCase
     {
         $this->app->singleton(VoicesEndpoint::class, function ($app) {
             $client = $app->make(ElevenLabsClient::class);
+
             return new FakeVoicesProvider($client);
         });
     }
@@ -63,6 +64,7 @@ class VoicesTest extends TestCase
     protected function createTestAudioFile(string $path = 'test-voice.wav'): string
     {
         Storage::disk('local')->put($path, 'fake audio content');
+
         return Storage::disk('local')->path($path);
     }
 
@@ -269,4 +271,3 @@ class VoicesTest extends TestCase
         $this->assertArrayHasKey('name', $array);
     }
 }
-

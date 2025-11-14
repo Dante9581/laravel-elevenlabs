@@ -72,4 +72,3 @@ class FakeVoicesProvider extends VoicesEndpoint
         return true;
     }
 }
-
