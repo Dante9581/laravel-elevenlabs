@@ -67,4 +67,3 @@ class DubbingEndpoint
         return $this->client->get("/dubbing/{$jobId}");
     }
 }
-

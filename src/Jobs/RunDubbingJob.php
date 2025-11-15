@@ -35,4 +35,3 @@ class RunDubbingJob implements ShouldQueue
             ->run();
     }
 }
-

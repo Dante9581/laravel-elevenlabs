@@ -51,6 +51,7 @@ class DubbingTest extends TestCase
     {
         $this->app->singleton(DubbingEndpoint::class, function ($app) {
             $client = $app->make(ElevenLabsClient::class);
+
             return new FakeDubbingProvider($client);
         });
     }
@@ -61,6 +62,7 @@ class DubbingTest extends TestCase
     protected function createTestVideoFile(string $path = 'test-video.mp4'): string
     {
         Storage::disk('local')->put($path, 'fake video content');
+
         return Storage::disk('local')->path($path);
     }
 
@@ -265,4 +267,3 @@ class DubbingTest extends TestCase
         $this->assertTrue(true);
     }
 }
-

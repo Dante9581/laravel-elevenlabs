@@ -11,8 +11,11 @@ use Illuminate\Support\Facades\Storage;
 class DubbingService
 {
     protected ?string $source = null;
+
     protected ?string $disk = null;
+
     protected ?string $target = null;
+
     protected ?array $options = null;
 
     /**
@@ -165,4 +168,3 @@ class DubbingService
         return $this;
     }
 }
-
