@@ -6,6 +6,8 @@
 
 A modern, fluent Laravel package for integrating with the ElevenLabs Text-to-Speech (TTS) and Speech-to-Text (STT) APIs. This package provides a clean and intuitive interface for converting text to speech and transcribing audio in your Laravel applications.
 
+**📖 [Türkçe Dokümantasyon](README.tr.md)**
+
 ## 📋 Requirements
 
 - PHP 8.2 or higher
@@ -389,6 +391,168 @@ $voice = $voices->findById('voice-id');
 $found = $voices->findByName('Nova');
 ```
 
+## Dubbing (Auto Dubbing Engine)
+
+### Basic Dubbing Usage
+
+Dub videos or audio files to different languages:
+
+```php
+// Run dubbing synchronously
+$result = ElevenLabs::dubbing()
+    ->source('input.mp4')
+    ->target('tr')
+    ->run();
+
+// Check status
+echo $result->status; // processing, completed, failed
+echo $result->jobId;
+echo $result->outputUrl; // Available when completed
+```
+
+### Using Storage Disks
+
+You can use files from any Laravel storage disk:
+
+```php
+// From local storage
+$result = ElevenLabs::dubbing()
+    ->source('videos/input.mp4', 'local')
+    ->target('en')
+    ->run();
+
+// From S3
+$result = ElevenLabs::dubbing()
+    ->source('videos/input.mp4', 's3')
+    ->target('es')
+    ->run();
+```
+
+### Using Absolute File Paths
+
+You can also use absolute file paths:
+
+```php
+$result = ElevenLabs::dubbing()
+    ->source('/path/to/video.mp4')
+    ->target('fr')
+    ->run();
+```
+
+### Dubbing Options
+
+You can pass additional options:
+
+```php
+$result = ElevenLabs::dubbing()
+    ->source('input.mp4')
+    ->target('tr')
+    ->options([
+        'num_speakers' => 2,
+        'watermark' => false,
+    ])
+    ->run();
+```
+
+### Background Dubbing with Queue
+
+For long-running dubbing jobs, use the queue:
+
+```php
+// Dispatch to queue
+ElevenLabs::dubbing()
+    ->source('input.mp4')
+    ->target('tr')
+    ->dispatch();
+
+// Or with parameters
+ElevenLabs::dubbing()->dispatch('input.mp4', 'tr');
+```
+
+Or create a dedicated job:
+
+```php
+use DigitalCoreHub\LaravelElevenLabs\Jobs\RunDubbingJob;
+
+RunDubbingJob::dispatch('input.mp4', null, 'tr', ['watermark' => false]);
+```
+
+### Check Dubbing Status
+
+Check the status of a dubbing job:
+
+```php
+$result = ElevenLabs::dubbing()->status('job-id');
+
+if ($result->isCompleted()) {
+    // Download the dubbed file
+    $outputUrl = $result->outputUrl;
+}
+
+if ($result->isInProgress()) {
+    // Job is still processing
+}
+
+if ($result->isFailed()) {
+    // Job failed
+}
+```
+
+### Dubbing Events
+
+The package dispatches events when dubbing completes:
+
+```php
+use DigitalCoreHub\LaravelElevenLabs\Events\DubbingCompleted;
+
+Event::listen(DubbingCompleted::class, function (DubbingCompleted $event) {
+    $result = $event->result;
+
+    if ($result->isCompleted()) {
+        // Download or process the dubbed file
+        $outputUrl = $result->outputUrl;
+    }
+});
+```
+
+### DubbingResult Data Model
+
+The `run()` and `status()` methods return a `DubbingResult` object:
+
+```php
+$result = ElevenLabs::dubbing()
+    ->source('input.mp4')
+    ->target('tr')
+    ->run();
+
+// Properties
+$result->status;      // processing, completed, failed
+$result->jobId;       // Job ID for status checking
+$result->outputUrl;   // URL to download dubbed file (when completed)
+$result->duration;     // Duration in seconds (when completed)
+$result->metadata;     // Additional metadata
+
+// Status checks
+$result->isCompleted();
+$result->isInProgress();
+$result->isFailed();
+
+// Convert to array
+$array = $result->toArray();
+```
+
+### Supported Languages
+
+Common target language codes:
+- `en` - English
+- `tr` - Turkish
+- `es` - Spanish
+- `fr` - French
+- `de` - German
+- `it` - Italian
+- `pt` - Portuguese
+- And more...
+
 ## 🔄 Queue Usage
 
 You can easily queue TTS generation jobs:
@@ -498,6 +662,19 @@ $this->app->singleton(SttEndpoint::class, function ($app) {
 - [x] Queue support with SyncVoicesJob
 - [x] Event system (VoiceCreated, VoiceSynced)
 - [x] Voice and VoiceCollection data models
+- [x] Storage disk integration
+- [x] Comprehensive test coverage
+
+### v0.4 - Dubbing (Auto Dubbing Engine) ✅
+- [x] Fluent API for video/audio dubbing
+- [x] Source file support (local and storage disks)
+- [x] Target language selection
+- [x] Dubbing options support
+- [x] Job status checking
+- [x] Queue support with RunDubbingJob
+- [x] Event system (DubbingCompleted)
+- [x] DubbingResult data model
+- [x] Status checking methods (isCompleted, isInProgress, isFailed)
 - [x] Storage disk integration
 - [x] Comprehensive test coverage
 

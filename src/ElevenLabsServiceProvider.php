@@ -3,9 +3,11 @@
 namespace DigitalCoreHub\LaravelElevenLabs;
 
 use DigitalCoreHub\LaravelElevenLabs\Http\Clients\ElevenLabsClient;
+use DigitalCoreHub\LaravelElevenLabs\Http\Endpoints\DubbingEndpoint;
 use DigitalCoreHub\LaravelElevenLabs\Http\Endpoints\SttEndpoint;
 use DigitalCoreHub\LaravelElevenLabs\Http\Endpoints\TtsEndpoint;
 use DigitalCoreHub\LaravelElevenLabs\Http\Endpoints\VoicesEndpoint;
+use DigitalCoreHub\LaravelElevenLabs\Services\Dubbing\DubbingService;
 use DigitalCoreHub\LaravelElevenLabs\Services\STT\SttService;
 use DigitalCoreHub\LaravelElevenLabs\Services\TTS\TtsService;
 use DigitalCoreHub\LaravelElevenLabs\Services\Voices\VoiceService;
@@ -70,6 +72,18 @@ class ElevenLabsServiceProvider extends ServiceProvider
         $this->app->bind(VoiceService::class, function ($app) {
             return new VoiceService(
                 endpoint: $app->make(VoicesEndpoint::class)
+            );
+        });
+
+        $this->app->singleton(DubbingEndpoint::class, function ($app) {
+            return new DubbingEndpoint(
+                $app->make(ElevenLabsClient::class)
+            );
+        });
+
+        $this->app->bind(DubbingService::class, function ($app) {
+            return new DubbingService(
+                endpoint: $app->make(DubbingEndpoint::class)
             );
         });
 
